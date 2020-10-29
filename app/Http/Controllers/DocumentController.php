@@ -93,7 +93,7 @@ class DocumentController extends Controller
         $ext = $extension[1];
 
         // File Name
-        $file_name = Str::upper($document_type) . '_' . Carbon::now()->format('Ymd_His') . '.' . $ext;
+        $file_name = Str::upper($document_type) . '_' . Carbon::now()->format('Ymd_His_v') . '.' . $ext;
         $file_name = str_replace(' ', '-', $file_name);
 
         $storage = Storage::disk('ctributarias')->put($file_name, $file);
