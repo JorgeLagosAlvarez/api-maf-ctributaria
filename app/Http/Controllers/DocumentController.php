@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class DocumentController extends Controller
 {
@@ -92,8 +93,11 @@ class DocumentController extends Controller
         $ext = $extension[1];
 
         // File Name
-        $file_name = Str::upper($document_type) . '-' . time() . '.' . $ext;
+        $file_name = Str::upper($document_type) . '_' . Carbon::now()->format('Ymd_His_v') . '.' . $ext;
         $file_name = str_replace(' ', '-', $file_name);
+
+        dd($file_name);
+
 
         $storage = Storage::disk('ctributarias')->put($file_name, $file);
 
