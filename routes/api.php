@@ -14,5 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('documents', 'DocumentController', ['only' => ['index', 'store', 'show', 'update']]);
-Route::get('b64/{file_name}', 'DocumentController@showb64')->name('documents.showb64');
+Route::apiResource('documents', 'DocumentController', [
+    'only' => [
+        'index', 'store', 'show', 'update'
+    ]
+])->middleware('auth.basic');
+
+Route::get('b64/{file_name}', 'DocumentController@showb64')->name('documents.showb64')->middleware('auth.basic');
