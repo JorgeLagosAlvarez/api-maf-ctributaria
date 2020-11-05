@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Document extends Model
 {
     protected $hidden = [
-        'created_at', 'updated_at'
+        'status_id', 'created_at', 'updated_at', 
     ];
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Document;
+use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +21,7 @@ class DocumentController extends Controller
     {
         $documents = Document::where('status_id', 1)->get();
 
-        return response()->json($documents, 202);
+        return response()->json($documents->load('status'), 202);
     }
 
     public function showb64($file_name)
@@ -67,6 +68,7 @@ class DocumentController extends Controller
     {
         //Validacion
         $validated = Validator::make($request->all(), [
+            'id_solicitud' => ['required', 'string', 'max:15'],
             'document_type' => ['required', 'string', 'max:100'],
             'file' => ['required']
         ]);
@@ -81,6 +83,7 @@ class DocumentController extends Controller
         }
 
         // Input
+        $id_solicitud = $request->input('id_solicitud');
         $document_type = $request->input('document_type');
         $data = $request->input('file');
 
@@ -93,7 +96,7 @@ class DocumentController extends Controller
         $ext = $extension[1];
 
         // File Name
-        $file_name = Str::upper($document_type) . '_' . Carbon::now()->format('Ymd_His_v') . '.' . $ext;
+        $file_name = Str::upper('Carpeta Tributaria') . '_' . Carbon::now()->format('Ymd_His_v') . '.' . $ext;
         $file_name = str_replace(' ', '-', $file_name);
 
         $storage = Storage::disk('ctributarias')->put($file_name, $file);
@@ -112,6 +115,7 @@ class DocumentController extends Controller
         }
 
         $document = new Document();
+        $document->id_solicitud = $id_solicitud;
         $document->document_type = $document_type;
         $document->file_name = $file_name;
         $document->ext = $ext;
@@ -133,7 +137,7 @@ class DocumentController extends Controller
      */
     public function show(Document $document)
     {
-        return response()->json($document, 202);
+        return response()->json($document->load('status'), 202);
     }
 
     /**
@@ -158,17 +162,33 @@ class DocumentController extends Controller
     {
         $status_id = $request->get('status_id');
 
-        if ($request->get('status_id') == null or $request->get('status_id') == '') {
+        $status = Status::find($status_id);
+        if ( !$status ) {
             $data = array(
                 'message' => [
                     'status_id' => [
-                        'Registro con problemas, favor de validar status_id no se pudo actualizar.'
+                        'Registro con problemas, se requiere validar status para poder actualizar.'
                     ]
                 ],
                 'type' => 'error'
             );
 
             return response()->json($data, 404);
+        }
+
+        switch ($status_id) {
+            case 1:
+                $data = array(
+                    'message' => [
+                        'status_id' => [
+                            'Este documento se encuentra en un estado distinto a Ingresado, no se puede volver a estado Ingresado.'
+                        ]
+                    ],
+                    'type' => 'error'
+                );
+    
+                return response()->json($data, 404);
+                break;
         }
 
         if ($request->get('status_id') != null and $request->get('status_id') != '') {
@@ -181,14 +201,12 @@ class DocumentController extends Controller
         $document->update();
 
         $data = array(
-            'document' => $document,
+            'document' => $document->load('status'),
             'message' => 'Registro actualizado correctamente.',
             'type' => 'success'
         );
 
-        return response()->json([
-            'data' => $data
-        ], 202);
+        return response()->json($data, 202);
     }
 
     /**
