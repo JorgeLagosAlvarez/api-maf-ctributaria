@@ -17,7 +17,7 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $documents = Document::where('status_id', 1)->get();
 
