@@ -66,6 +66,7 @@ class HonoraryTicketController extends Controller
             'id_solicitud' => ['required', 'string', 'max:15'],
             'document_type' => ['required', 'string', 'max:100'],
             'barcode' => ['required', 'string', 'max:100'],
+            'workitemid' => ['string', 'max:100'],
             'validation' => ['bool', 'max:50'],
         ]);
 
@@ -82,6 +83,7 @@ class HonoraryTicketController extends Controller
         $id_solicitud = $request->get('id_solicitud');
         $document_type = $request->get('document_type');
         $barcode = $request->get('barcode');
+        $workitemid = $request->get('workitemid');
         $validation = $request->get('validation', false);
 
         if ( !$document_type and Str::lower($document_type) != 'boleta honorario' ) {
@@ -102,6 +104,7 @@ class HonoraryTicketController extends Controller
         $honorary_ticket->document_type = ucwords($document_type);
         $honorary_ticket->barcode = $barcode;
         $honorary_ticket->validation = $validation;
+        $honorary_ticket->workitemid = $workitemid;
 
         $honorary_ticket->save();
 

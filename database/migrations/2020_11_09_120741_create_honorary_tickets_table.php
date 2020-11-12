@@ -22,7 +22,8 @@ class CreateHonoraryTicketsTable extends Migration
             $table->string('document_type');
             $table->string('id_solicitud');
             $table->string('barcode');
-            $table->boolean('validation')->default(False);
+            $table->string('workitemid')->nullable();
+            $table->boolean('validation')->default(false);
             $table->timestamps();
         });
     }

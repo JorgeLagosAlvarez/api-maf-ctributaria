@@ -89,6 +89,7 @@ class DocumentController extends Controller
             'id_solicitud' => ['required', 'string', 'max:15'],
             'document_type' => ['required', 'string', 'max:100'],
             'validation' => ['bool', 'max:50'],
+            'workitemid' => ['string', 'max:100'],
             'file' => ['required'],
         ]);
 
@@ -106,6 +107,7 @@ class DocumentController extends Controller
         $document_type = $request->get('document_type');
         $data = $request->get('file');
         $validation = $request->get('validation', false);
+        $workitemid = $request->get('workitemid');
 
         // B64
         list($type, $data) = explode(';', $data);
@@ -140,7 +142,8 @@ class DocumentController extends Controller
         $document->file_name = $file_name;
         $document->ext = $ext;
         $document->validation = $validation;
-
+        $document->workitemid = $workitemid;
+        
         $document->save();
 
         return response()->json([

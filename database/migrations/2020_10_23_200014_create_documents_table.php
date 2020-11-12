@@ -23,6 +23,7 @@ class CreateDocumentsTable extends Migration
             $table->string('file_name');
             $table->string('ext');
             $table->string('id_solicitud');
+            $table->string('workitemid')->nullable();
             $table->boolean('validation')->default(false);
             $table->timestamps();
         });
