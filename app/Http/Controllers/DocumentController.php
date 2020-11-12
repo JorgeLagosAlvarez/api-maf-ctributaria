@@ -19,7 +19,25 @@ class DocumentController extends Controller
      */
     public function index(Request $request)
     {
-        $documents = Document::where('status_id', 1)->get();
+        $status_id = $request->get('status_id', 1);
+
+        // Objeto Status
+        $status = Status::find($status_id);
+
+        if ( !$status ) {
+            $data = array(
+                'message' => [
+                    'status_id' => [
+                        'El dato que intentas enviar no es el correcto.'
+                    ]
+                ],
+                'type' => 'error'
+            );
+
+            return response()->json($data, 404);
+        }
+
+        $documents = Document::where('status_id', $status->id)->get();
 
         return response()->json($documents->load('status'), 202);
     }
@@ -70,7 +88,8 @@ class DocumentController extends Controller
         $validated = Validator::make($request->all(), [
             'id_solicitud' => ['required', 'string', 'max:15'],
             'document_type' => ['required', 'string', 'max:100'],
-            'file' => ['required']
+            'validation' => ['bool', 'max:50'],
+            'file' => ['required'],
         ]);
 
         if ($validated->fails()) {
@@ -83,9 +102,10 @@ class DocumentController extends Controller
         }
 
         // Input
-        $id_solicitud = $request->input('id_solicitud');
-        $document_type = $request->input('document_type');
-        $data = $request->input('file');
+        $id_solicitud = $request->get('id_solicitud');
+        $document_type = $request->get('document_type');
+        $data = $request->get('file');
+        $validation = $request->get('validation', false);
 
         // B64
         list($type, $data) = explode(';', $data);
@@ -119,6 +139,7 @@ class DocumentController extends Controller
         $document->document_type = $document_type;
         $document->file_name = $file_name;
         $document->ext = $ext;
+        $document->validation = $validation;
 
         $document->save();
 
