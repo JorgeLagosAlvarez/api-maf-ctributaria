@@ -7,6 +7,7 @@ use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class HonoraryTicketController extends Controller
 {
@@ -119,6 +120,7 @@ class HonoraryTicketController extends Controller
      */
     public function show($id_solicitud)
     {
+        // Objeto HonoraryTicket
         $honorary_ticket = HonoraryTicket::where('id_solicitud', $id_solicitud)->get();
 
         if ( $honorary_ticket->count() == 0 ) {
@@ -134,9 +136,11 @@ class HonoraryTicketController extends Controller
             return response()->json($data, 404);
         }
 
-        return response()->json(
-            $honorary_ticket->load('status')
-        , 202);
+        $honorary_ticket = $honorary_ticket[0];
+
+        return response()->json([
+            'honorary_ticket' => $honorary_ticket->load('status')
+        ], 202);
     }
 
     /**
@@ -173,23 +177,21 @@ class HonoraryTicketController extends Controller
 
             return response()->json($data, 404);
         }
-
+        
+        // Input
         $status_id = $request->get('status_id');
         $validation = $request->get('validation', false);
 
-
-        
-
-
-        
-
+        // Objeto Status
         $status = Status::find($status_id);
-        $honorary_ticket = HonoraryTicket::find($id);
 
-        if ( !$honorary_ticket ) {
+        // Objeto HonoraryTicket
+        $honorary_ticket = HonoraryTicket::where('id_solicitud', $id_solicitud)->get();
+
+        if ( $honorary_ticket->count() == 0 ) {
             $data = array(
                 'message' => [
-                    'honorary_ticket_id' => [
+                    'id_solicitud' => [
                         'El dato que intentas enviar no es el correcto.'
                     ]
                 ],
@@ -212,20 +214,9 @@ class HonoraryTicketController extends Controller
             return response()->json($data, 404);
         }
 
-        if ( !$validation or (Str::lower($validation) != "valido" and Str::lower($validation) != "no valido") ) {
-            $data = array(
-                'message' => [
-                    'validation' => [
-                        'El dato que intentas enviar no es el correcto.'
-                    ]
-                ],
-                'type' => 'error'
-            );
+        $honorary_ticket = $honorary_ticket[0];
 
-            return response()->json($data, 404);
-        }
-
-        if ($status_id != null and $status_id != '') {
+        if ( $status_id != null and $status_id != '' ) {
             $honorary_ticket->status_id = $status_id;
         }
 
