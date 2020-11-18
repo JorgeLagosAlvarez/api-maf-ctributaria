@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\HonoraryTicket;
+use App\CupoTaxi;
 use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class HonoraryTicketController extends Controller
+class CupoTaxiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class HonoraryTicketController extends Controller
         // Input
         $status_id = $request->get('status_id', 1);
 
-        // Objeto status
+        // Objeto Status
         $status = Status::find($status_id);
 
         if ( !$status ) {
@@ -36,10 +36,10 @@ class HonoraryTicketController extends Controller
             return response()->json($data, 404);
         }
 
-        // HonoraryTicket por status
-        $honorary_tickets = HonoraryTicket::where('status_id', $status->id)->get();
+        // CupoTaxi por Status
+        $cupo_taxis = CupoTaxi::where('status_id', $status->id)->get();
 
-        return response()->json($honorary_tickets->load('status'), 202);
+        return response()->json($cupo_taxis->load('status'), 202);
     }
 
     /**
@@ -64,7 +64,7 @@ class HonoraryTicketController extends Controller
         $validated = Validator::make($request->all(), [
             'document_type' => ['required', 'string', 'max:100'],
             'id_solicitud' => ['required', 'string', 'max:15'],
-            'barcode' => ['required', 'string', 'max:100'],
+            'patente' => ['required', 'string', 'max:10'],
             'workitemid' => ['string', 'max:100'],
             'validation' => ['bool', 'max:50'],
         ]);
@@ -81,11 +81,11 @@ class HonoraryTicketController extends Controller
         // Input
         $document_type = $request->get('document_type');
         $id_solicitud = $request->get('id_solicitud');
-        $barcode = $request->get('barcode');
+        $patente = $request->get('patente');
         $workitemid = $request->get('workitemid');
         $validation = $request->get('validation', false);
 
-        if ( !$document_type or Str::lower($document_type) != 'boleta honorario' ) {
+        if ( !$document_type or Str::lower($document_type) != 'cupo taxi' ) {
             $data = array(
                 'message' => [
                     'document_type' => [
@@ -98,17 +98,17 @@ class HonoraryTicketController extends Controller
             return response()->json($data, 404);
         }
 
-        $honorary_ticket = new HonoraryTicket();
-        $honorary_ticket->document_type = ucwords($document_type);
-        $honorary_ticket->id_solicitud = $id_solicitud;
-        $honorary_ticket->barcode = $barcode;
-        $honorary_ticket->workitemid = $workitemid;
-        $honorary_ticket->validation = $validation;
+        $cupo_taxi = new CupoTaxi();
+        $cupo_taxi->document_type = ucwords($document_type);
+        $cupo_taxi->id_solicitud = $id_solicitud;
+        $cupo_taxi->patente = Str::upper($patente);
+        $cupo_taxi->workitemid = $workitemid;
+        $cupo_taxi->validation = $validation;
         
-        $honorary_ticket->save();
+        $cupo_taxi->save();
 
         return response()->json([
-            'honorary_ticket' => $honorary_ticket,
+            'cupo_taxi' => $cupo_taxi,
             'message' => 'Registro grabado correctamente.',
             'type' => 'success'
         ], 202);
@@ -117,15 +117,15 @@ class HonoraryTicketController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\HonoraryTicket  $honoraryTicket
+     * @param  \App\CupoTaxi  $cupoTaxi
      * @return \Illuminate\Http\Response
      */
     public function show($id_solicitud)
     {
-        // Objeto HonoraryTicket
-        $honorary_ticket = HonoraryTicket::where('id_solicitud', $id_solicitud)->get();
+        // Objeto CupoTaxi
+        $cupo_taxi = CupoTaxi::where('id_solicitud', $id_solicitud)->get();
 
-        if ( $honorary_ticket->count() == 0 ) {
+        if ( $cupo_taxi->count() == 0 ) {
             $data = array(
                 'message' => [
                     'id_solicitud' => [
@@ -138,20 +138,20 @@ class HonoraryTicketController extends Controller
             return response()->json($data, 404);
         }
 
-        $honorary_ticket = $honorary_ticket[0];
+        $cupo_taxi = $cupo_taxi[0];
 
         return response()->json([
-            'honorary_ticket' => $honorary_ticket->load('status')
+            'cupo_taxi' => $cupo_taxi->load('status')
         ], 202);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\HonoraryTicket  $honoraryTicket
+     * @param  \App\CupoTaxi  $cupoTaxi
      * @return \Illuminate\Http\Response
      */
-    public function edit(HonoraryTicket $honoraryTicket)
+    public function edit(CupoTaxi $cupoTaxi)
     {
         //
     }
@@ -160,7 +160,7 @@ class HonoraryTicketController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\HonoraryTicket  $honoraryTicket
+     * @param  \App\CupoTaxi  $cupoTaxi
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id_solicitud)
@@ -187,10 +187,10 @@ class HonoraryTicketController extends Controller
         // Objeto Status
         $status = Status::find($status_id);
 
-        // Objeto HonoraryTicket
-        $honorary_ticket = HonoraryTicket::where('id_solicitud', $id_solicitud)->get();
+        // Objeto Cav
+        $cupo_taxi = CupoTaxi::where('id_solicitud', $id_solicitud)->get();
 
-        if ( $honorary_ticket->count() == 0 ) {
+        if ( $cupo_taxi->count() == 0 ) {
             $data = array(
                 'message' => [
                     'id_solicitud' => [
@@ -216,18 +216,18 @@ class HonoraryTicketController extends Controller
             return response()->json($data, 404);
         }
 
-        $honorary_ticket = $honorary_ticket[0];
+        $cupo_taxi = $cupo_taxi[0];
 
         if ( $status_id != '' ) {
-            $honorary_ticket->status_id = $status_id;
+            $cupo_taxi->status_id = $status_id;
         }
 
-        $honorary_ticket->validation = $validation;
+        $cupo_taxi->validation = $validation;
 
-        $honorary_ticket->update();
+        $cupo_taxi->update();
 
         return response()->json([
-            'honorary_ticket' => $honorary_ticket->load('status'),
+            'cupo_taxi' => $cupo_taxi->load('status'),
             'message' => 'Registro actualizado correctamente.',
             'type' => 'success'
         ], 202);
@@ -236,10 +236,10 @@ class HonoraryTicketController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\HonoraryTicket  $honoraryTicket
+     * @param  \App\CupoTaxi  $cupoTaxi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HonoraryTicket $honoraryTicket)
+    public function destroy(CupoTaxi $cupoTaxi)
     {
         //
     }
