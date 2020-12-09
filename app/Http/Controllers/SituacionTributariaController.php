@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\CupoTaxi;
+use App\SituacionTributaria;
 use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class CupoTaxiController extends Controller
+class SituacionTributariaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class CupoTaxiController extends Controller
         // Input
         $status_id = $request->get('status_id', 1);
 
-        // Objeto Status
+        // Objeto status
         $status = Status::find($status_id);
 
         if ( !$status ) {
@@ -36,10 +36,10 @@ class CupoTaxiController extends Controller
             return response()->json($data, 404);
         }
 
-        // CupoTaxi por Status
-        $cupo_taxis = CupoTaxi::where('status_id', $status->id)->get();
+        // SituacionTributaria por status
+        $situacion_tributaria = SituacionTributaria::where('status_id', $status->id)->get();
 
-        return response()->json($cupo_taxis->load('status'), 202);
+        return response()->json($situacion_tributaria->load('status'), 202);
     }
 
     /**
@@ -64,8 +64,8 @@ class CupoTaxiController extends Controller
         $validated = Validator::make($request->all(), [
             'document_type' => ['required', 'string', 'max:100'],
             'id_solicitud' => ['required', 'string', 'max:15'],
-            'patente' => ['required', 'string', 'max:10'],
-            'workitemid' => ['required', 'unique:cupo_taxis', 'string', 'max:100'],
+            'rut_contribuyente' => ['required', 'string', 'max:100'],
+            'workitemid' => ['required', 'unique:situacion_tributarias', 'string', 'max:100'],
             'validation' => ['bool', 'max:50'],
         ]);
 
@@ -81,11 +81,11 @@ class CupoTaxiController extends Controller
         // Input
         $document_type = $request->get('document_type');
         $id_solicitud = $request->get('id_solicitud');
-        $patente = $request->get('patente');
+        $rut_contribuyente = $request->get('rut_contribuyente');
         $workitemid = $request->get('workitemid');
         $validation = $request->get('validation', false);
 
-        if ( !$document_type or Str::lower($document_type) != 'cupo taxi' ) {
+        if ( !$document_type or Str::lower($document_type) != 'situacion tributaria' ) {
             $data = array(
                 'message' => [
                     'document_type' => [
@@ -98,17 +98,17 @@ class CupoTaxiController extends Controller
             return response()->json($data, 404);
         }
 
-        $cupo_taxi = new CupoTaxi();
-        $cupo_taxi->document_type = ucwords($document_type);
-        $cupo_taxi->id_solicitud = $id_solicitud;
-        $cupo_taxi->patente = Str::upper($patente);
-        $cupo_taxi->workitemid = $workitemid;
-        $cupo_taxi->validation = $validation;
+        $situacion_tributaria = new SituacionTributaria();
+        $situacion_tributaria->document_type = ucwords($document_type);
+        $situacion_tributaria->id_solicitud = $id_solicitud;
+        $situacion_tributaria->rut_contribuyente = $rut_contribuyente;
+        $situacion_tributaria->workitemid = $workitemid;
+        $situacion_tributaria->validation = $validation;
         
-        $cupo_taxi->save();
+        $situacion_tributaria->save();
 
         return response()->json([
-            'cupo_taxi' => $cupo_taxi,
+            'situacion_tributaria' => $situacion_tributaria,
             'message' => 'Registro grabado correctamente.',
             'type' => 'success'
         ], 202);
@@ -117,15 +117,15 @@ class CupoTaxiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\CupoTaxi  $cupoTaxi
+     * @param  \App\SituacionTributaria  $situacionTributaria
      * @return \Illuminate\Http\Response
      */
     public function show($id_solicitud)
     {
-        // Objeto CupoTaxi
-        $cupo_taxi = CupoTaxi::where('id_solicitud', $id_solicitud)->get();
+        // Objeto HonoraryTicket
+        $situacion_tributaria = SituacionTributaria::where('id_solicitud', $id_solicitud)->get();
 
-        if ( $cupo_taxi->count() == 0 ) {
+        if ( $situacion_tributaria->count() == 0 ) {
             $data = array(
                 'message' => [
                     'id_solicitud' => [
@@ -139,17 +139,17 @@ class CupoTaxiController extends Controller
         }
 
         return response()->json([
-            'cupo_taxi' => $cupo_taxi->load('status')
+            'situacion_tributaria' => $situacion_tributaria->load('status')
         ], 202);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\CupoTaxi  $cupoTaxi
+     * @param  \App\SituacionTributaria  $situacionTributaria
      * @return \Illuminate\Http\Response
      */
-    public function edit(CupoTaxi $cupoTaxi)
+    public function edit(SituacionTributaria $situacionTributaria)
     {
         //
     }
@@ -158,7 +158,7 @@ class CupoTaxiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\CupoTaxi  $cupoTaxi
+     * @param  \App\SituacionTributaria  $situacionTributaria
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id_solicitud, $workitemid)
@@ -177,7 +177,7 @@ class CupoTaxiController extends Controller
 
             return response()->json($data, 404);
         }
-        
+
         // Input
         $status_id = $request->get('status_id');
         $validation = $request->get('validation', false);
@@ -185,13 +185,16 @@ class CupoTaxiController extends Controller
         // Objeto Status
         $status = Status::find($status_id);
 
-        // Objeto CupoTaxi
-        $cupo_taxi = CupoTaxi::where('id_solicitud', $id_solicitud)->get();
-
-        if ( $cupo_taxi->count() == 0 ) {
+        // Objeto SituacionTributaria
+        $situacion_tributaria = SituacionTributaria::where('id_solicitud', $id_solicitud)->where('workitemid', $workitemid)->get();        
+        
+        if ( $situacion_tributaria->count() == 0 ) {
             $data = array(
                 'message' => [
                     'id_solicitud' => [
+                        'El dato que intentas enviar no es el correcto.'
+                    ],
+                    'workitemid' => [
                         'El dato que intentas enviar no es el correcto.'
                     ]
                 ],
@@ -214,18 +217,18 @@ class CupoTaxiController extends Controller
             return response()->json($data, 404);
         }
 
-        $cupo_taxi = $cupo_taxi[0];
+        $situacion_tributaria = $situacion_tributaria[0];
 
         if ( $status_id != '' ) {
-            $cupo_taxi->status_id = $status_id;
+            $situacion_tributaria->status_id = $status_id;
         }
 
-        $cupo_taxi->validation = $validation;
+        $situacion_tributaria->validation = $validation;
 
-        $cupo_taxi->update();
+        $situacion_tributaria->update();
 
         return response()->json([
-            'cupo_taxi' => $cupo_taxi->load('status'),
+            'situacion_tributaria' => $situacion_tributaria->load('status'),
             'message' => 'Registro actualizado correctamente.',
             'type' => 'success'
         ], 202);
@@ -234,10 +237,10 @@ class CupoTaxiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\CupoTaxi  $cupoTaxi
+     * @param  \App\SituacionTributaria  $situacionTributaria
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CupoTaxi $cupoTaxi)
+    public function destroy(SituacionTributaria $situacionTributaria)
     {
         //
     }

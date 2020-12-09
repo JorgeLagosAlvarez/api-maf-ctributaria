@@ -86,11 +86,11 @@ class DocumentController extends Controller
     {
         //Validacion
         $validated = Validator::make($request->all(), [
-            'id_solicitud' => ['required', 'string', 'max:15'],
             'document_type' => ['required', 'string', 'max:100'],
-            'validation' => ['bool', 'max:50'],
-            'workitemid' => ['string', 'max:100'],
+            'id_solicitud' => ['required', 'string', 'max:15'],
             'file' => ['required'],
+            'workitemid' => ['required', 'unique:documents', 'string', 'max:100'],
+            'validation' => ['bool', 'max:50'],
         ]);
 
         if ($validated->fails()) {
@@ -103,12 +103,25 @@ class DocumentController extends Controller
         }
 
         // Input
-        $id_solicitud = $request->get('id_solicitud');
         $document_type = $request->get('document_type');
+        $id_solicitud = $request->get('id_solicitud');
         $data = $request->get('file');
-        $validation = $request->get('validation', false);
         $workitemid = $request->get('workitemid');
+        $validation = $request->get('validation', false);
 
+        if ( !$document_type or Str::lower($document_type) != 'carpeta tributaria' ) {
+            $data = array(
+                'message' => [
+                    'document_type' => [
+                        'El dato que intentas enviar no es el correcto.'
+                    ]
+                ],
+                'type' => 'error'
+            );
+
+            return response()->json($data, 404);
+        }
+        
         // B64
         list($type, $data) = explode(';', $data);
         list(, $data) = explode(',', $data);
@@ -137,13 +150,13 @@ class DocumentController extends Controller
         }
 
         $document = new Document();
-        $document->id_solicitud = $id_solicitud;
         $document->document_type = $document_type;
+        $document->id_solicitud = $id_solicitud;
         $document->file_name = $file_name;
         $document->ext = $ext;
+        $document->workitemid = $workitemid;        
         $document->validation = $validation;
-        $document->workitemid = $workitemid;
-        
+
         $document->save();
 
         return response()->json([
@@ -184,14 +197,33 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
-        $status_id = $request->get('status_id');
+         // Validacion
+         $validated = Validator::make($request->all(), [
+            'status_id' => ['required', 'integer'],
+            'validation' => ['required', 'bool', 'max:50'],
+        ]);
 
+        if ($validated->fails()) {
+            $data = array(
+                'message' => $validated->errors(),
+                'type' => 'error'
+            );
+
+            return response()->json($data, 404);
+        }
+
+        // Input
+        $status_id = $request->get('status_id');
+        $validation = $request->get('validation', false);
+
+        // Objeto Status
         $status = Status::find($status_id);
-        if ( !$status ) {
+
+        if ( !$status or $status_id == 1 ) {
             $data = array(
                 'message' => [
                     'status_id' => [
-                        'Registro con problemas, se requiere validar status para poder actualizar.'
+                        'El dato que intentas enviar no es el correcto.'
                     ]
                 ],
                 'type' => 'error'
@@ -200,37 +232,22 @@ class DocumentController extends Controller
             return response()->json($data, 404);
         }
 
-        switch ($status_id) {
-            case 1:
-                $data = array(
-                    'message' => [
-                        'status_id' => [
-                            'Este documento se encuentra en un estado distinto a Ingresado, no se puede volver a estado Ingresado.'
-                        ]
-                    ],
-                    'type' => 'error'
-                );
-    
-                return response()->json($data, 404);
-                break;
-        }
-
-        if ($request->get('status_id') != null and $request->get('status_id') != '') {
+        if ( $status_id != '' ) {
             $document->status_id = $status_id;
         }
+
+        $document->validation = $validation;
 
         // Eliminar archivo
         Storage::disk('ctributarias')->delete($document->file_name);
 
         $document->update();
 
-        $data = array(
+        return response()->json([
             'document' => $document->load('status'),
             'message' => 'Registro actualizado correctamente.',
             'type' => 'success'
-        );
-
-        return response()->json($data, 202);
+        ], 202);
     }
 
     /**

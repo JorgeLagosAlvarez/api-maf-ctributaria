@@ -66,7 +66,7 @@ class CavController extends Controller
             'id_solicitud' => ['required', 'string', 'max:15'],
             'folio' => ['required', 'string', 'max:100'],
             'codigo_verificacion' => ['required', 'string', 'max:100'],
-            'workitemid' => ['string', 'max:100'],
+            'workitemid' => ['required', 'unique:cavs', 'string', 'max:100'],
             'validation' => ['bool', 'max:50'],
         ]);
 
@@ -141,8 +141,6 @@ class CavController extends Controller
             return response()->json($data, 404);
         }
 
-        $cav = $cav[0];
-
         return response()->json([
             'cav' => $cav->load('status')
         ], 202);
@@ -166,7 +164,7 @@ class CavController extends Controller
      * @param  \App\Cav  $cav
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id_solicitud)
+    public function update(Request $request, $id_solicitud, $workitemid)
     {
         // Validacion
         $validated = Validator::make($request->all(), [
@@ -191,7 +189,7 @@ class CavController extends Controller
         $status = Status::find($status_id);
 
         // Objeto Cav
-        $cav = Cav::where('id_solicitud', $id_solicitud)->get();
+        $cav = Cav::where('id_solicitud', $id_solicitud)->where('workitemid', $workitemid)->get();
 
         if ( $cav->count() == 0 ) {
             $data = array(

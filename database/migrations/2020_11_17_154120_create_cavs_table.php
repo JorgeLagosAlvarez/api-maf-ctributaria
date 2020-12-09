@@ -15,6 +15,7 @@ class CreateCavsTable extends Migration
     {
         Schema::create('cavs', function (Blueprint $table) {
             $table->id();
+            
             $table->bigInteger('status_id')->unsigned()->default(1);
             $table->foreign('status_id')->references('id')->on('statuses');
 
@@ -22,7 +23,7 @@ class CreateCavsTable extends Migration
             $table->string('id_solicitud');
             $table->string('folio');
             $table->string('codigo_verificacion');
-            $table->string('workitemid')->nullable();
+            $table->string('workitemid')->unique();
             $table->boolean('validation')->default(false);
             $table->timestamps();
         });

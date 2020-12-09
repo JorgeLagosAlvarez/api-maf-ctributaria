@@ -34,16 +34,21 @@ Route::group(['prefix' => 'docs'], function() {
     Route::get('boletas-honorarios', 'HonoraryTicketController@index')->name('honorarytickets.index')->middleware('auth.basic');
     Route::post('boletas-honorarios', 'HonoraryTicketController@store')->name('honorarytickets.store')->middleware('auth.basic');
     Route::get('boletas-honorarios/{id_solicitud}', 'HonoraryTicketController@show')->name('honorarytickets.show')->middleware('auth.basic');
-    Route::patch('boletas-honorarios/{id_solicitud}', 'HonoraryTicketController@update')->name('honorarytickets.update')->middleware('auth.basic');
+    Route::patch('boletas-honorarios/{id_solicitud}/{workitemid}', 'HonoraryTicketController@update')->name('honorarytickets.update')->middleware('auth.basic');
 
     Route::get('cavs', 'CavController@index')->name('cavs.index')->middleware('auth.basic');
     Route::post('cavs', 'CavController@store')->name('cavs.store')->middleware('auth.basic');
     Route::get('cavs/{id_solicitud}', 'CavController@show')->name('cavs.show')->middleware('auth.basic');
-    Route::patch('cavs/{id_solicitud}', 'CavController@update')->name('cavs.update')->middleware('auth.basic');
+    Route::patch('cavs/{id_solicitud}/{workitemid}', 'CavController@update')->name('cavs.update')->middleware('auth.basic');
   
     Route::get('cupos-taxis', 'CupoTaxiController@index')->name('cupostaxis.index')->middleware('auth.basic');
     Route::post('cupos-taxis', 'CupoTaxiController@store')->name('cupostaxis.store')->middleware('auth.basic');
     Route::get('cupos-taxis/{id_solicitud}', 'CupoTaxiController@show')->name('cupostaxis.show')->middleware('auth.basic');
-    Route::patch('cupos-taxis/{id_solicitud}', 'CupoTaxiController@update')->name('cupostaxis.update')->middleware('auth.basic');
-    
+    Route::patch('cupos-taxis/{id_solicitud}/{workitemid}', 'CupoTaxiController@update')->name('cupostaxis.update')->middleware('auth.basic');
+ 
+    Route::get('situacion-tributarias', 'SituacionTributariaController@index')->name('situaciontributarias.index')->middleware('auth.basic');
+    Route::post('situacion-tributarias', 'SituacionTributariaController@store')->name('situaciontributarias.store')->middleware('auth.basic');
+    Route::get('situacion-tributarias/{id_solicitud}', 'SituacionTributariaController@show')->name('situaciontributarias.show')->middleware('auth.basic');
+    Route::patch('situacion-tributarias/{id_solicitud}/{workitemid}', 'SituacionTributariaController@update')->name('situaciontributarias.update')->middleware('auth.basic');
+
 });

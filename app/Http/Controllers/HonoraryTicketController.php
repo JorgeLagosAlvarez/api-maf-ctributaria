@@ -65,7 +65,7 @@ class HonoraryTicketController extends Controller
             'document_type' => ['required', 'string', 'max:100'],
             'id_solicitud' => ['required', 'string', 'max:15'],
             'barcode' => ['required', 'string', 'max:100'],
-            'workitemid' => ['string', 'max:100'],
+            'workitemid' => ['required', 'unique:honorary_tickets', 'string', 'max:100'],
             'validation' => ['bool', 'max:50'],
         ]);
 
@@ -138,8 +138,6 @@ class HonoraryTicketController extends Controller
             return response()->json($data, 404);
         }
 
-        $honorary_ticket = $honorary_ticket[0];
-
         return response()->json([
             'honorary_ticket' => $honorary_ticket->load('status')
         ], 202);
@@ -163,7 +161,7 @@ class HonoraryTicketController extends Controller
      * @param  \App\HonoraryTicket  $honoraryTicket
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id_solicitud)
+    public function update(Request $request, $id_solicitud, $workitemid)
     {
         // Validacion
         $validated = Validator::make($request->all(), [
@@ -188,7 +186,7 @@ class HonoraryTicketController extends Controller
         $status = Status::find($status_id);
 
         // Objeto HonoraryTicket
-        $honorary_ticket = HonoraryTicket::where('id_solicitud', $id_solicitud)->get();
+        $honorary_ticket = HonoraryTicket::where('id_solicitud', $id_solicitud)->where('workitemid', $workitemid)->get();
 
         if ( $honorary_ticket->count() == 0 ) {
             $data = array(
