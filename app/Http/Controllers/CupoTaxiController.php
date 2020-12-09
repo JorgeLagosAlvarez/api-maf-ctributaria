@@ -79,7 +79,7 @@ class CupoTaxiController extends Controller
         }
 
         // Input
-        $document_type = $request->get('document_type');
+        $document_type = Str::lower($request->get('document_type'));
         $id_solicitud = $request->get('id_solicitud');
         $patente = $request->get('patente');
         $workitemid = $request->get('workitemid');
@@ -192,6 +192,9 @@ class CupoTaxiController extends Controller
             $data = array(
                 'message' => [
                     'id_solicitud' => [
+                        'El dato que intentas enviar no es el correcto.'
+                    ],
+                    'workitemid' => [
                         'El dato que intentas enviar no es el correcto.'
                     ]
                 ],

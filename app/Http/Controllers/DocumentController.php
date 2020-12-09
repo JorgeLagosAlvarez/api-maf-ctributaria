@@ -103,7 +103,7 @@ class DocumentController extends Controller
         }
 
         // Input
-        $document_type = $request->get('document_type');
+        $document_type = Str::lower($request->get('document_type'));
         $id_solicitud = $request->get('id_solicitud');
         $data = $request->get('file');
         $workitemid = $request->get('workitemid');

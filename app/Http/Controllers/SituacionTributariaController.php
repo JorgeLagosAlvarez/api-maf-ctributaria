@@ -79,7 +79,7 @@ class SituacionTributariaController extends Controller
         }
 
         // Input
-        $document_type = $request->get('document_type');
+        $document_type = Str::lower($request->get('document_type'));
         $id_solicitud = $request->get('id_solicitud');
         $rut_contribuyente = $request->get('rut_contribuyente');
         $workitemid = $request->get('workitemid');

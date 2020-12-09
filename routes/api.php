@@ -51,4 +51,9 @@ Route::group(['prefix' => 'docs'], function() {
     Route::get('situacion-tributarias/{id_solicitud}', 'SituacionTributariaController@show')->name('situaciontributarias.show')->middleware('auth.basic');
     Route::patch('situacion-tributarias/{id_solicitud}/{workitemid}', 'SituacionTributariaController@update')->name('situaciontributarias.update')->middleware('auth.basic');
 
+    Route::get('certificados-afps', 'AfpDocumentController@index')->name('certificadosafps.index')->middleware('auth.basic');
+    Route::post('certificados-afps', 'AfpDocumentController@store')->name('certificadosafps.store')->middleware('auth.basic');
+    Route::get('certificados-afps/{id_solicitud}', 'AfpDocumentController@show')->name('certificadosafps.show')->middleware('auth.basic');
+    Route::patch('certificados-afps/{id_solicitud}/{workitemid}', 'AfpDocumentController@update')->name('certificadosafps.update')->middleware('auth.basic');
+
 });

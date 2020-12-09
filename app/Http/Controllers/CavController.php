@@ -80,7 +80,7 @@ class CavController extends Controller
         }
 
         // Input
-        $document_type = $request->get('document_type');
+        $document_type = Str::lower($request->get('document_type'));
         $id_solicitud = $request->get('id_solicitud');
         $folio = $request->get('folio');
         $codigo_verificacion = $request->get('codigo_verificacion');
@@ -208,6 +208,9 @@ class CavController extends Controller
             $data = array(
                 'message' => [
                     'status_id' => [
+                        'El dato que intentas enviar no es el correcto.'
+                    ],
+                    'workitemid' => [
                         'El dato que intentas enviar no es el correcto.'
                     ]
                 ],

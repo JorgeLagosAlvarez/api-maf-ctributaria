@@ -14,10 +14,12 @@ class DatabaseSeeder extends Seeder
         $this->truncateTables([
             'users',
             'statuses',
+            'afps',
         ]);
 
         $this->call(UserSeeder::class);
         $this->call(StatusSeeder::class);
+        $this->call(AfpSeeder::class);
     }
 
     public function truncateTables(array $tables)
