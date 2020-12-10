@@ -20,7 +20,7 @@ class HonoraryTicketController extends Controller
         // Input
         $status_id = $request->get('status_id', 1);
 
-        // Objeto status
+        // Objeto Status
         $status = Status::find($status_id);
 
         if ( !$status ) {
@@ -36,7 +36,7 @@ class HonoraryTicketController extends Controller
             return response()->json($data, 404);
         }
 
-        // HonoraryTicket por status
+        // HonoraryTicket por Status
         $honorary_tickets = HonoraryTicket::where('status_id', $status->id)->get();
 
         return response()->json($honorary_tickets->load('status'), 202);

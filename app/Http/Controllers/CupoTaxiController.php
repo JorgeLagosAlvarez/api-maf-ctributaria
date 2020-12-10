@@ -186,7 +186,7 @@ class CupoTaxiController extends Controller
         $status = Status::find($status_id);
 
         // Objeto CupoTaxi
-        $cupo_taxi = CupoTaxi::where('id_solicitud', $id_solicitud)->get();
+        $cupo_taxi = CupoTaxi::where('id_solicitud', $id_solicitud)->where('workitemid', $workitemid)->get();
 
         if ( $cupo_taxi->count() == 0 ) {
             $data = array(

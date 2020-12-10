@@ -196,6 +196,9 @@ class CavController extends Controller
                 'message' => [
                     'id_solicitud' => [
                         'El dato que intentas enviar no es el correcto.'
+                    ],
+                    'workitemid' => [
+                        'El dato que intentas enviar no es el correcto.'
                     ]
                 ],
                 'type' => 'error'
@@ -208,9 +211,6 @@ class CavController extends Controller
             $data = array(
                 'message' => [
                     'status_id' => [
-                        'El dato que intentas enviar no es el correcto.'
-                    ],
-                    'workitemid' => [
                         'El dato que intentas enviar no es el correcto.'
                     ]
                 ],
