@@ -56,4 +56,10 @@ Route::group(['prefix' => 'docs'], function() {
     Route::get('certificados-afps/{id_solicitud}', 'AfpDocumentController@show')->name('certificadosafps.show')->middleware('auth.basic');
     Route::patch('certificados-afps/{id_solicitud}/{workitemid}', 'AfpDocumentController@update')->name('certificadosafps.update')->middleware('auth.basic');
 
+    Route::get('liquidacion-carabineros', 'LiquidacionCarabineroController@index')->name('liquidacioncarabinero.index')->middleware('auth.basic');
+    Route::post('liquidacion-carabineros', 'LiquidacionCarabineroController@store')->name('liquidacioncarabinero.store')->middleware('auth.basic');
+    Route::get('liquidacion-carabineros/{id_solicitud}', 'LiquidacionCarabineroController@show')->name('liquidacioncarabinero.show')->middleware('auth.basic');
+    Route::patch('liquidacion-carabineros/{id_solicitud}/{workitemid}', 'LiquidacionCarabineroController@update')->name('liquidacioncarabinero.update')->middleware('auth.basic');
+    Route::get('b64/liquidacion-carabineros/{file_name}', 'LiquidacionCarabineroController@showb64')->name('liquidacioncarabinero.showb64')->middleware('auth.basic');
+    
 });
