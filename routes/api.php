@@ -61,5 +61,15 @@ Route::group(['prefix' => 'docs'], function() {
     Route::get('liquidacion-carabineros/{id_solicitud}', 'LiquidacionCarabineroController@show')->name('liquidacioncarabinero.show')->middleware('auth.basic');
     Route::patch('liquidacion-carabineros/{id_solicitud}/{workitemid}', 'LiquidacionCarabineroController@update')->name('liquidacioncarabinero.update')->middleware('auth.basic');
     Route::get('b64/liquidacion-carabineros/{file_name}', 'LiquidacionCarabineroController@showb64')->name('liquidacioncarabinero.showb64')->middleware('auth.basic');
-    
+
+    Route::get('liquidacion-pensions', 'LiquidacionPensionController@index')->name('liquidacionpensions.index')->middleware('auth.basic');
+    Route::post('liquidacion-pensions', 'LiquidacionPensionController@store')->name('liquidacionpensions.store')->middleware('auth.basic');
+    Route::get('liquidacion-pensions/{id_solicitud}', 'LiquidacionPensionController@show')->name('liquidacionpensions.show')->middleware('auth.basic');
+    Route::patch('liquidacion-pensions/{id_solicitud}/{workitemid}', 'LiquidacionPensionController@update')->name('liquidacionpensions.update')->middleware('auth.basic');
+
+    Route::get('liquidacion-sueldos', 'LiquidacionSueldoController@index')->name('liquidacionsueldos.index')->middleware('auth.basic');
+    Route::post('liquidacion-sueldos', 'LiquidacionSueldoController@store')->name('liquidacionsueldos.store')->middleware('auth.basic');
+    Route::get('liquidacion-sueldos/{id_solicitud}', 'LiquidacionSueldoController@show')->name('liquidacionsueldos.show')->middleware('auth.basic');
+    Route::patch('liquidacion-sueldos/{id_solicitud}/{workitemid}', 'LiquidacionSueldoController@update')->name('liquidacionsueldos.update')->middleware('auth.basic');
+
 });
