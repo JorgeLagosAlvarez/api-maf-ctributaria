@@ -23,6 +23,7 @@ class CreateLiquidacionSueldosTable extends Migration
             $table->string('id_solicitud');
             $table->string('afp');
             $table->string('mes');
+            $table->string('anio');
             $table->integer('impuesto');
             $table->integer('monto_bruto');
             $table->integer('apv');

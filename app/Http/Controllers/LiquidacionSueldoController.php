@@ -65,6 +65,7 @@ class LiquidacionSueldoController extends Controller
             'document_type' => ['required', 'string', 'max:100'],
             'afp' => ['required', 'string', 'max:50'],
             'mes' => ['required', 'string', 'max:50'],
+            'anio' => ['required', 'integer', 'digits_between:4,4'],
             'impuesto' => ['required', 'numeric', 'digits_between:3,8'],
             'monto_bruto' => ['required', 'numeric', 'digits_between:3,8'],
             'apv' => ['numeric', 'digits_between:1,8'],
@@ -92,6 +93,7 @@ class LiquidacionSueldoController extends Controller
         $document_type = Str::lower($request->get('document_type'));
         $afp = $request->get('afp');
         $mes = $request->get('mes');
+        $anio = $request->get('anio');
         $impuesto = $request->get('impuesto');
         $monto_bruto = $request->get('monto_bruto');
         $apv = $request->get('apv', 0);
@@ -122,6 +124,7 @@ class LiquidacionSueldoController extends Controller
         $liquidacion_sueldo->document_type = ucwords($document_type);
         $liquidacion_sueldo->afp = Str::upper($afp);
         $liquidacion_sueldo->mes = Str::upper($mes);
+        $liquidacion_sueldo->anio = (string) (int) str_replace('.', '', $anio);
         $liquidacion_sueldo->impuesto = (string) (int) str_replace('.', '', $impuesto);
         $liquidacion_sueldo->monto_bruto = (string) (int) str_replace('.', '', $monto_bruto);
         $liquidacion_sueldo->apv = (string) (int) str_replace('.', '', $apv);
