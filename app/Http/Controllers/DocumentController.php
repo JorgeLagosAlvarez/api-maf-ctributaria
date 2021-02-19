@@ -66,6 +66,30 @@ class DocumentController extends Controller
         ], 202);
     }
 
+    public function showidsolicitud($id_solicitud)
+    {
+        // Objeto Document
+        $document = Document::where('id_solicitud', $id_solicitud)->get();
+
+        if ( $document->count() == 0 ) {
+            $data = array(
+                'message' => [
+                    'id_solicitud' => [
+                        'El dato que intentas enviar no es el correcto.'
+                    ]
+                ],
+                'type' => 'error'
+            );
+
+            return response()->json($data, 404);
+        }
+
+        return response()->json([
+            'carpeta_tributaria' => $document->load('status')
+        ], 202);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
