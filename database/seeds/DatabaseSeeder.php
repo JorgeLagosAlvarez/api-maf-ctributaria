@@ -15,11 +15,13 @@ class DatabaseSeeder extends Seeder
             'users',
             'statuses',
             'afps',
+            'proveedor_servicios',
         ]);
 
         $this->call(UserSeeder::class);
         $this->call(StatusSeeder::class);
         $this->call(AfpSeeder::class);
+        $this->call(ProveedorServicioSeeder::class);
     }
 
     public function truncateTables(array $tables)

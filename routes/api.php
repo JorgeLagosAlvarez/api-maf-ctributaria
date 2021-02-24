@@ -75,4 +75,9 @@ Route::group(['prefix' => 'docs'], function() {
     Route::get('liquidacion-sueldos/{id_solicitud}', 'LiquidacionSueldoController@show')->name('liquidacionsueldos.show')->middleware('auth.basic');
     Route::patch('liquidacion-sueldos/{id_solicitud}/{workitemid}', 'LiquidacionSueldoController@update')->name('liquidacionsueldos.update')->middleware('auth.basic');
 
+    Route::get('comprobante-domicilios', 'ComprobanteDomicilioController@index')->name('comprobantedomicilios.index')->middleware('auth.basic');
+    Route::post('comprobante-domicilios', 'ComprobanteDomicilioController@store')->name('comprobantedomicilios.store')->middleware('auth.basic');
+    Route::get('comprobante-domicilios/{id_solicitud}', 'ComprobanteDomicilioController@show')->name('comprobantedomicilios.show')->middleware('auth.basic');
+    Route::patch('comprobante-domicilios/{id_solicitud}/{workitemid}', 'ComprobanteDomicilioController@update')->name('comprobantedomicilios.update')->middleware('auth.basic');
+    
 });
