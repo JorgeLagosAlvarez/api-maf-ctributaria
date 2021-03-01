@@ -25,7 +25,10 @@ class CreateLiquidacionSueldosTable extends Migration
             $table->string('mes');
             $table->string('anio');
             $table->integer('impuesto');
-            $table->integer('monto_bruto');
+            $table->integer('monto_bruto')->default(0);
+            $table->integer('total_imponible')->default(0);
+            $table->integer('total_haberes')->default(0);
+            $table->integer('total_tributable')->default(0);
             $table->integer('apv');
             $table->integer('ajustes');
             $table->string('prevision');

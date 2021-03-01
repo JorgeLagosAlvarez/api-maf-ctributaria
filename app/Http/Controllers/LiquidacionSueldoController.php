@@ -67,7 +67,10 @@ class LiquidacionSueldoController extends Controller
             'mes' => ['required', 'string', 'max:50'],
             'anio' => ['required', 'integer', 'digits_between:4,4'],
             'impuesto' => ['required', 'numeric', 'digits_between:3,8'],
-            'monto_bruto' => ['required', 'numeric', 'digits_between:3,8'],
+            'monto_bruto' => ['numeric', 'digits_between:1,8'],
+            'total_imponible' => ['numeric', 'digits_between:1,8'],
+            'total_haberes' => ['numeric', 'digits_between:1,8'],
+            'total_tributable' => ['numeric', 'digits_between:1,8'],
             'apv' => ['numeric', 'digits_between:1,8'],
             'ajustes' => ['numeric', 'digits_between:1,8'],
             'prevision' => ['required', 'string', 'max:50'],
@@ -95,7 +98,10 @@ class LiquidacionSueldoController extends Controller
         $mes = $request->get('mes');
         $anio = $request->get('anio');
         $impuesto = $request->get('impuesto');
-        $monto_bruto = $request->get('monto_bruto');
+        $monto_bruto = $request->get('monto_bruto', 0);
+        $total_imponible = $request->get('total_imponible', 0);
+        $total_haberes = $request->get('total_haberes', 0);
+        $total_tributable = $request->get('total_tributable', 0);
         $apv = $request->get('apv', 0);
         $ajustes = $request->get('ajustes', 0);
         $prevision = $request->get('prevision');
@@ -127,6 +133,9 @@ class LiquidacionSueldoController extends Controller
         $liquidacion_sueldo->anio = (string) (int) str_replace('.', '', $anio);
         $liquidacion_sueldo->impuesto = (string) (int) str_replace('.', '', $impuesto);
         $liquidacion_sueldo->monto_bruto = (string) (int) str_replace('.', '', $monto_bruto);
+        $liquidacion_sueldo->total_imponible = (string) (int) str_replace('.', '', $total_imponible);
+        $liquidacion_sueldo->total_haberes = (string) (int) str_replace('.', '', $total_haberes);
+        $liquidacion_sueldo->total_tributable = (string) (int) str_replace('.', '', $total_tributable);
         $liquidacion_sueldo->apv = (string) (int) str_replace('.', '', $apv);
         $liquidacion_sueldo->ajustes = (string) (int) str_replace('.', '', $ajustes);
         $liquidacion_sueldo->prevision = Str::upper($prevision);
