@@ -81,7 +81,7 @@ class SituacionTributariaController extends Controller
         // Input
         $document_type = Str::lower($request->get('document_type'));
         $id_solicitud = $request->get('id_solicitud');
-        $rut_contribuyente = Str::of($request->get('rut_contribuyente'))->replace(' ', '')->replace('.', '');
+        $rut_contribuyente = (string) Str::of($request->get('rut_contribuyente'))->replace(' ', '')->replace('.', '');
         $workitemid = $request->get('workitemid');
         $validation = $request->get('validation', false);
 
@@ -104,6 +104,8 @@ class SituacionTributariaController extends Controller
         $situacion_tributaria->rut_contribuyente = $rut_contribuyente;
         $situacion_tributaria->workitemid = $workitemid;
         $situacion_tributaria->validation = $validation;
+
+        dd($situacion_tributaria);
         
         $situacion_tributaria->save();
 
