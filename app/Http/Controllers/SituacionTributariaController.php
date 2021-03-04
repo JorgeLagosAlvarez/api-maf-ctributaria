@@ -105,8 +105,6 @@ class SituacionTributariaController extends Controller
         $situacion_tributaria->workitemid = $workitemid;
         $situacion_tributaria->validation = $validation;
 
-        dd($situacion_tributaria);
-        
         $situacion_tributaria->save();
 
         return response()->json([
