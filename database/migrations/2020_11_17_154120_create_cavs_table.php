@@ -25,6 +25,7 @@ class CreateCavsTable extends Migration
             $table->string('codigo_verificacion');
             $table->string('workitemid')->unique();
             $table->boolean('validation')->default(false);
+            $table->string('patente')->nullable();
             $table->timestamps();
         });
     }

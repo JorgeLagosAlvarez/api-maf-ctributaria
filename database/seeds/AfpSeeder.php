@@ -35,5 +35,9 @@ class AfpSeeder extends Seeder
         Afp::create([
             'name' => 'Provida'
         ]);
+
+        Afp::create([
+            'name' => 'Uno'
+        ]);
     }
 }

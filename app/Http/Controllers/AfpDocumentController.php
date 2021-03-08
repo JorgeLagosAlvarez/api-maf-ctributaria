@@ -155,7 +155,7 @@ class AfpDocumentController extends Controller
         $afp_document->folio = $folio;
         $afp_document->workitemid = $workitemid;
         $afp_document->validation = $validation;
-
+        
         $afp_document->save();
 
         return response()->json([

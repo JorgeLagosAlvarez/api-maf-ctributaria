@@ -24,6 +24,8 @@ class CreateHonoraryTicketsTable extends Migration
             $table->string('barcode');
             $table->string('workitemid')->unique();
             $table->boolean('validation')->default(false);
+            $table->string('rut')->nullable();
+            $table->string('mes')->nullable();
             $table->timestamps();
         });
     }

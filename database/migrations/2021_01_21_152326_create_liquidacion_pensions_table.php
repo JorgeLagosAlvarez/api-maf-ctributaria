@@ -25,6 +25,7 @@ class CreateLiquidacionPensionsTable extends Migration
             $table->string('nombre_cliente')->nullable();
             $table->string('rut_cliente')->nullable();
             $table->string('periodo')->nullable();
+            $table->string('mes')->nullable();
             $table->integer('subtotal_haberes')->nullable();
             $table->integer('subtotal_descuentos')->nullable();
             $table->integer('total_neto')->nullable();

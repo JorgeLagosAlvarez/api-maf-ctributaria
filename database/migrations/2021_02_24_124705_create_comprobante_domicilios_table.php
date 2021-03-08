@@ -25,7 +25,7 @@ class CreateComprobanteDomiciliosTable extends Migration
             $table->string('document_type');
             $table->string('id_solicitud');
             $table->string('nro_cliente');
-            $table->string('nombre_cliente')->nullable();;
+            $table->string('nombre_cliente')->nullable();
             $table->string('direccion_cliente');
             $table->string('comuna_cliente');
             $table->string('workitemid')->unique();

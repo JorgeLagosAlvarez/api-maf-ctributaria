@@ -24,6 +24,9 @@ class CreateDocumentsTable extends Migration
             $table->string('id_solicitud');
             $table->string('workitemid')->unique();
             $table->boolean('validation')->default(false);
+            $table->string('comentario')->nullable();
+            $table->string('rut')->nullable();
+            $table->string('folio')->nullable();
             $table->timestamps();
         });
     }
