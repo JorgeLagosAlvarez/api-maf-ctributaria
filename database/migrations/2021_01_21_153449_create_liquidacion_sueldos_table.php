@@ -38,7 +38,7 @@ class CreateLiquidacionSueldosTable extends Migration
             $table->string('exento_seguro_cesantia');
             $table->integer('seguro_cesantia')->default(0);
             $table->string('workitemid')->unique();
-            $table->string('tipo_contrato')->nullable();
+            $table->string('tipo_contrato')->default("0");
             $table->boolean('validation')->default(false);
             $table->timestamps();
         });
