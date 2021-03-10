@@ -74,7 +74,7 @@ class LiquidacionSueldoController extends Controller
             'apv' => ['numeric', 'digits_between:1,8'],
             'ajustes' => ['numeric', 'digits_between:1,8'],
             'prevision' => ['required', 'string', 'max:50'],
-            'monto_salud_1' => ['required', 'numeric', 'digits_between:3,8'],
+            'monto_salud_1' => ['required', 'numeric', 'digits_between:1,8'],
             'monto_salud_2' => ['numeric', 'digits_between:1,8'],
             'exento_seguro_cesantia' => ['required', 'string', 'max:2'],
             'seguro_cesantia' => ['numeric', 'digits_between:1,8'],
@@ -106,7 +106,7 @@ class LiquidacionSueldoController extends Controller
         $apv = $request->get('apv', 0);
         $ajustes = $request->get('ajustes', 0);
         $prevision = $request->get('prevision');
-        $monto_salud_1 = $request->get('monto_salud_1');
+        $monto_salud_1 = $request->get('monto_salud_1', 0);
         $monto_salud_2 = $request->get('monto_salud_2', 0);
         $exento_seguro_cesantia = $request->get('exento_seguro_cesantia');
         $seguro_cesantia = $request->get('seguro_cesantia', 0);
