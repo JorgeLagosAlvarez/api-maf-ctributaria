@@ -81,7 +81,6 @@ class LiquidacionSueldoController extends Controller
             'id_solicitud' => ['required', 'string', 'max:15'],
             'workitemid' => ['required', 'unique:liquidacion_sueldos', 'string', 'max:100'],
             'validation' => ['bool', 'max:50'],
-            'tipo_contrato' => ['string', 'max:50'],
         ]);
 
         if ($validated->fails()) {
@@ -113,7 +112,7 @@ class LiquidacionSueldoController extends Controller
         $id_solicitud = $request->get('id_solicitud');
         $workitemid = $request->get('workitemid');
         $validation = $request->get('validation', false);
-        $tipo_contrato = $request->get('tipo_contrato');
+        $tipo_contrato = $request->get('tipo_contrato', '0');
 
         if ( !$document_type or Str::lower($document_type) != 'liquidacion sueldo' ) {
             $data = array(
