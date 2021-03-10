@@ -115,7 +115,6 @@ class DocumentController extends Controller
             'file' => ['required'],
             'workitemid' => ['required', 'unique:documents', 'string', 'max:100'],
             'validation' => ['bool', 'max:50'],
-            'comentario' => ['string', 'max:250'],
         ]);
 
         if ($validated->fails()) {
@@ -133,7 +132,7 @@ class DocumentController extends Controller
         $data = $request->get('file');
         $workitemid = $request->get('workitemid');
         $validation = $request->get('validation', false);
-        $comentario = $request->get('comentario');
+        $comentario = $request->get('comentario', null);
 
         if ( !$document_type or Str::lower($document_type) != 'carpeta tributaria' ) {
             $data = array(
@@ -228,7 +227,6 @@ class DocumentController extends Controller
          $validated = Validator::make($request->all(), [
             'status_id' => ['required', 'integer'],
             'validation' => ['required', 'bool', 'max:50'],
-            'comentario' => ['string', 'max:250'],
         ]);
 
         if ($validated->fails()) {
@@ -243,7 +241,7 @@ class DocumentController extends Controller
         // Input
         $status_id = $request->get('status_id');
         $validation = $request->get('validation', false);
-        $comentario = $request->get('comentario');
+        $comentario = $request->get('comentario', null);
 
         // Objeto Status
         $status = Status::find($status_id);
@@ -266,11 +264,8 @@ class DocumentController extends Controller
         }
 
         $document->validation = $validation;
-
-        if ( $comentario != '' ) {
-            $document->comentario = $comentario;
-        }
-
+        $document->comentario = $comentario;
+        
         // Eliminar archivo
         Storage::disk('ctributarias')->delete($document->file_name);
 
