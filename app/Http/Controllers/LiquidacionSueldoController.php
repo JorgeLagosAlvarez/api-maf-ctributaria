@@ -66,7 +66,7 @@ class LiquidacionSueldoController extends Controller
             'afp' => ['required', 'string', 'max:50'],
             'mes' => ['required', 'string', 'max:50'],
             'anio' => ['required', 'integer', 'digits_between:4,4'],
-            'impuesto' => ['required', 'numeric', 'digits_between:3,8'],
+            'impuesto' => ['required', 'numeric', 'digits_between:1,8'],
             'monto_bruto' => ['numeric', 'digits_between:1,8'],
             'total_imponible' => ['numeric', 'digits_between:1,8'],
             'total_haberes' => ['numeric', 'digits_between:1,8'],
