@@ -73,6 +73,7 @@ class LiquidacionPensionController extends Controller
             'id_solicitud' => ['required', 'string', 'max:15'],
             'workitemid' => ['required', 'unique:liquidacion_pensions', 'string', 'max:100'],
             'validation' => ['bool', 'max:50'],
+            'mes' => ['required', 'string', 'max:20'],
         ]);
 
         if ($validated->fails()) {
@@ -96,6 +97,7 @@ class LiquidacionPensionController extends Controller
         $id_solicitud = $request->get('id_solicitud');
         $workitemid = $request->get('workitemid');
         $validation = $request->get('validation', false);
+        $mes = $request->get('mes');
 
         if ( !$document_type or Str::lower($document_type) != 'liquidacion pension' ) {
             $data = array(
@@ -122,6 +124,7 @@ class LiquidacionPensionController extends Controller
         $liquidacion_pension->id_solicitud = $id_solicitud;
         $liquidacion_pension->workitemid = $workitemid;
         $liquidacion_pension->validation = $validation;
+        $liquidacion_pension->mes = $mes;
 
         $liquidacion_pension->save();
 

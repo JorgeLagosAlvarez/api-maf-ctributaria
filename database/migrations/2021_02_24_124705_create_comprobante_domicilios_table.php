@@ -28,6 +28,8 @@ class CreateComprobanteDomiciliosTable extends Migration
             $table->string('nombre_cliente')->nullable();
             $table->string('direccion_cliente');
             $table->string('comuna_cliente');
+            $table->date('fecha_emision');
+            $table->integer('monto')->default(0);
             $table->string('workitemid')->unique();
             $table->boolean('validation')->default(false);
             $table->timestamps();

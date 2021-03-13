@@ -65,6 +65,7 @@ class CavController extends Controller
             'document_type' => ['required', 'string', 'max:100'],
             'id_solicitud' => ['required', 'string', 'max:15'],
             'folio' => ['required', 'string', 'max:100'],
+            'patente' => ['required', 'string', 'max:10'],
             'codigo_verificacion' => ['required', 'string', 'max:100'],
             'workitemid' => ['required', 'unique:cavs', 'string', 'max:100'],
             'validation' => ['bool', 'max:50'],
@@ -86,6 +87,7 @@ class CavController extends Controller
         $codigo_verificacion = $request->get('codigo_verificacion');
         $workitemid = $request->get('workitemid');
         $validation = $request->get('validation', false);
+        $patente = $request->get('patente');
 
         if ( !$document_type or Str::lower($document_type) != 'cav' ) {
             $data = array(
@@ -107,6 +109,7 @@ class CavController extends Controller
         $cav->codigo_verificacion = $codigo_verificacion;
         $cav->workitemid = $workitemid;
         $cav->validation = $validation;
+        $cav->patente = $patente;
         
         $cav->save();
 

@@ -71,6 +71,7 @@ class LiquidacionSueldoController extends Controller
             'total_imponible' => ['numeric', 'digits_between:1,8'],
             'total_haberes' => ['numeric', 'digits_between:1,8'],
             'total_tributable' => ['numeric', 'digits_between:1,8'],
+            'rut' => ['required', 'string', 'max:50'],
             'apv' => ['numeric', 'digits_between:1,8'],
             'ajustes' => ['numeric', 'digits_between:1,8'],
             'prevision' => ['required', 'string', 'max:50'],
@@ -113,6 +114,7 @@ class LiquidacionSueldoController extends Controller
         $workitemid = $request->get('workitemid');
         $validation = $request->get('validation', false);
         $tipo_contrato = $request->get('tipo_contrato', '0');
+        $rut = $request->get('rut');
 
         if ( !$document_type or Str::lower($document_type) != 'liquidacion sueldo' ) {
             $data = array(
@@ -148,6 +150,7 @@ class LiquidacionSueldoController extends Controller
         $liquidacion_sueldo->workitemid = $workitemid;
         $liquidacion_sueldo->validation = $validation;
         $liquidacion_sueldo->tipo_contrato = $tipo_contrato;
+        $liquidacion_sueldo->rut = $rut;
 
         $liquidacion_sueldo->save();
 

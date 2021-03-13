@@ -8,6 +8,7 @@ use App\ProveedorServicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ComprobanteDomicilioController extends Controller
 {
@@ -98,6 +99,8 @@ class ComprobanteDomicilioController extends Controller
             'nombre_cliente' => ['string', 'max:200'],
             'direccion_cliente' => ['required', 'string', 'max:200'],
             'comuna_cliente' => ['required', 'string', 'max:50'],
+            'fecha_emision' => ['required', 'date'],
+            'monto' => ['required', 'numeric', 'digits_between:1,8'],
             'workitemid' => ['required', 'unique:comprobante_domicilios', 'string', 'max:100'],
             'validation' => ['bool', 'max:50'],
         ]);
@@ -119,6 +122,8 @@ class ComprobanteDomicilioController extends Controller
         $nombre_cliente = $request->get('nombre_cliente');
         $direccion_cliente = $request->get('direccion_cliente');
         $comuna_cliente = $request->get('comuna_cliente');
+        $fecha_emision = $request->get('fecha_emision');
+        $monto = $request->get('monto', 0);
         $workitemid = $request->get('workitemid');
         $validation = $request->get('validation', false);
 
@@ -161,6 +166,8 @@ class ComprobanteDomicilioController extends Controller
         $comprobante_domicilio->comuna_cliente = $comuna_cliente;
         $comprobante_domicilio->workitemid = $workitemid;
         $comprobante_domicilio->validation = $validation;
+        $comprobante_domicilio->fecha_emision = Carbon::parse($fecha_emision);
+        $comprobante_domicilio->monto = $monto;
 
         $comprobante_domicilio->save();
 
