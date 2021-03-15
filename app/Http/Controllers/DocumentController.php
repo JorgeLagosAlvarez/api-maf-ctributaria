@@ -114,7 +114,8 @@ class DocumentController extends Controller
             'id_solicitud' => ['required', 'string', 'max:15'],
             'file' => ['required'],
             'rut' => ['required', 'string', 'max:50'],
-            'folio' => ['required', 'string', 'max:100'],
+            'folio_f22' => ['string', 'max:100'],
+            'folio_f29' => ['string', 'max:100'],
             'workitemid' => ['required', 'unique:documents', 'string', 'max:100'],
             'validation' => ['bool', 'max:50'],
         ]);
@@ -136,7 +137,8 @@ class DocumentController extends Controller
         $validation = $request->get('validation', false);
         $comentario = $request->get('comentario', null);
         $rut = $request->get('rut');
-        $folio = $request->get('folio');
+        $folio_f22 = $request->get('folio_f22', null);
+        $folio_f29 = $request->get('folio_f29', null);
 
         if ( !$document_type or Str::lower($document_type) != 'carpeta tributaria' ) {
             $data = array(
@@ -187,7 +189,8 @@ class DocumentController extends Controller
         $document->validation = $validation;
         $document->comentario = $comentario;
         $document->rut = $rut;
-        $document->folio = $folio;
+        $document->folio_f22 = $folio_f22;
+        $document->folio_f29 = $folio_f29;
 
         $document->save();
 

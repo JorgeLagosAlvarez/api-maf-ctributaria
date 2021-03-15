@@ -26,7 +26,8 @@ class CreateDocumentsTable extends Migration
             $table->boolean('validation')->default(false);
             $table->string('comentario')->nullable();
             $table->string('rut')->nullable();
-            $table->string('folio')->nullable();
+            $table->string('folio_f22')->nullable();
+            $table->string('folio_f29')->nullable();
             $table->timestamps();
         });
     }
