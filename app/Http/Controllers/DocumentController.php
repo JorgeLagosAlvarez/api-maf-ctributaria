@@ -114,8 +114,6 @@ class DocumentController extends Controller
             'id_solicitud' => ['required', 'string', 'max:15'],
             'file' => ['required'],
             'rut' => ['required', 'string', 'max:50'],
-            'folio_f22' => ['string', 'max:100'],
-            'folio_f29' => ['string', 'max:100'],
             'workitemid' => ['required', 'unique:documents', 'string', 'max:100'],
             'validation' => ['bool', 'max:50'],
         ]);
