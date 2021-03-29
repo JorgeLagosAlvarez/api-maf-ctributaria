@@ -119,6 +119,7 @@ class ComprobanteDomicilioController extends Controller
         $id_solicitud = $request->get('id_solicitud');
         $proveedor_servicio_id = $request->get('proveedor_servicio_id');
         $nro_cliente = $request->get('nro_cliente');
+        $nro_boleta = $request->get('nro_boleta', null);
         $nombre_cliente = $request->get('nombre_cliente');
         $direccion_cliente = $request->get('direccion_cliente');
         $comuna_cliente = $request->get('comuna_cliente');
@@ -161,6 +162,7 @@ class ComprobanteDomicilioController extends Controller
         $comprobante_domicilio->id_solicitud = $id_solicitud;
         $comprobante_domicilio->proveedor_servicio_id = $proveedor_servicio_id;
         $comprobante_domicilio->nro_cliente = $nro_cliente;
+        $comprobante_domicilio->nro_boleta = $nro_boleta;
         $comprobante_domicilio->nombre_cliente = $nombre_cliente;
         $comprobante_domicilio->direccion_cliente = $direccion_cliente;
         $comprobante_domicilio->comuna_cliente = $comuna_cliente;
